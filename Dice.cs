@@ -8,7 +8,8 @@ namespace FoopMiniProject
         public int Current { get; private set; }
         public Dice()
         {
-            random = new Random();
+            //add seed as to get an actual random value.
+            random = new Random(Guid.NewGuid().GetHashCode());
             Current = 0;
         }
 
