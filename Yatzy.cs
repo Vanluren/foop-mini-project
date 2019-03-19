@@ -1,3 +1,4 @@
+using System;
 namespace FoopMiniProject
 {
     class Yatzy
@@ -10,13 +11,13 @@ namespace FoopMiniProject
             {
                 var newDice = new Dice(6);
                 newDice.Roll();
-                rolledDices[i] = newDice.Current;
+                rolledDices[i] = newDice.CurrentEyes;
             }
         }
         public int Chance()
         {
             int chanceRes = 0;
-            foreach(int diceValue in rolledDices)
+            for(var i = 0; 0 < rolledDices.Length; i++)
             {
                 chanceRes += rolledDices[i];
             }
@@ -37,9 +38,9 @@ namespace FoopMiniProject
     {
         static void Main(string[] args)
         {
-            Yatzy newYatzyGame = new Yatzy();
-            newYatzyGame.Roll();
-            System.Console.WriteLine(newYatzyGame.rolledDices.ToString());
+            Yatzy yatzyGame = new Yatzy();
+            yatzyGame.Roll();
+             Console.WriteLine("[{0}]", string.Join(", ", yatzyGame.rolledDices));
         }
     }
 }
