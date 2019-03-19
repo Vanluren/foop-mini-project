@@ -134,3 +134,8 @@ $RECYCLE.BIN/
 .DS_Store
 
 _NCrunch*
+.vs/foop-mini-project/xs/UserPrefs.xml
+.vs/foop-mini-project/xs/sqlite3/db.lock
+.vs/foop-mini-project/xs/sqlite3/storage.ide-shm
+.vs/foop-mini-project/xs/sqlite3/storage.ide-wal
+.vs/foop-mini-project/xs/sqlite3/storage.ide
