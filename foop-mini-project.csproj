@@ -6,4 +6,8 @@
     <RootNamespace>foop_mini_project</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="InteractivePrompt" Version="1.0.5" />
+  </ItemGroup>
+
 </Project>

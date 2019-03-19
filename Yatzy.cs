@@ -36,7 +36,7 @@ namespace FoopMiniProject
     }
     class TestYatzy
     {
-        static void Main(string[] args)
+        static void Main01(string[] args)
         {
             Yatzy yatzyGame = new Yatzy();
             yatzyGame.Roll();
