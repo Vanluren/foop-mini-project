@@ -17,7 +17,7 @@ namespace FoopMiniProject
         public int Chance()
         {
             int chanceRes = 0;
-            for(var i = 0; 0 < rolledDices.Length; i++)
+            for (var i = 0; 0 < rolledDices.Length; i++)
             {
                 chanceRes += rolledDices[i];
             }
@@ -27,20 +27,11 @@ namespace FoopMiniProject
         public int NumberOf(int eyes)
         {
             int numberOfDices = 0;
-            foreach(int diceValue in rolledDices)
+            foreach (int diceValue in rolledDices)
             {
                 numberOfDices++;
             }
             return numberOfDices;
-        }
-    }
-    class TestYatzy
-    {
-        static void Main(string[] args)
-        {
-            Yatzy yatzyGame = new Yatzy();
-            yatzyGame.Roll();
-             Console.WriteLine("[{0}]", string.Join(", ", yatzyGame.rolledDices));
         }
     }
 }
