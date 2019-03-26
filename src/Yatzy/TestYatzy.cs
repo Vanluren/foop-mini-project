@@ -1,5 +1,5 @@
 using System;
-using FoopMiniProject;
+using foop_mini_project;
 
 namespace foop_mini_project
 {
