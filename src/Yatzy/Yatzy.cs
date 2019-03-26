@@ -1,5 +1,5 @@
 using System;
-namespace FoopMiniProject
+namespace foop_mini_project
 {
     class Yatzy
     {
@@ -9,7 +9,7 @@ namespace FoopMiniProject
         {
             for (var i = 0; i < numberOfDices + 1; i++)
             {
-                var newDice = new Dice(6);
+                var newDice = new Dice();
                 newDice.Roll();
                 rolledDices[i] = newDice.CurrentEyes;
             }
@@ -22,6 +22,10 @@ namespace FoopMiniProject
                 chanceRes += rolledDices[i];
             }
             return chanceRes;
+        }
+        public bool checkValues(int[] values)
+        {
+            return true;
         }
 
         public int NumberOf(int eyes)
