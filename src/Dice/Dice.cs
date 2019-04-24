@@ -7,7 +7,6 @@ namespace foop_mini_project
         public Random random;
         public int numberOfSides = 6;
         public int CurrentEyes { get; set; }
-
         public bool HoldDice { get; set; }
         public Dice()
         {
