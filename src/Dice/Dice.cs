@@ -4,19 +4,27 @@ namespace foop_mini_project
 {
     public class Dice
     {
-        public Random random;
-        public int numberOfSides = 6;
-        public int CurrentEyes { get; set; }
-        public bool HoldDice { get; set; }
-        public Dice()
+        protected Random random;
+        protected int numberOfSides;
+        private bool Held = false;
+        public int CurrentEyes;
+        public Dice(int sides = 6)
         {
-            //add seed as to get an actual random value.
+            numberOfSides = sides;
+            //add seed as to get an actual random value. Stolen from slides.
             random = new Random(Guid.NewGuid().GetHashCode());
-            CurrentEyes = 0;
         }
-        public virtual int Roll()
+        public virtual int RollDice()
         {
-            return CurrentEyes = random.Next(1, numberOfSides + 1);
+            if (Held == false)
+            {
+                return CurrentEyes = random.Next(1, numberOfSides + 1);
+            }
+            return CurrentEyes;
+        }
+        public void HoldDice(bool holdDice)
+        {
+            Held = holdDice;
         }
     }
 }
