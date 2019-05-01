@@ -24,24 +24,23 @@ namespace foop_mini_project.src
         public void StartGame()
         {
             Console.Clear();
-            NewTurn();
-            // var input = userInteraction.UserStartGame();
+            var input = userInteraction.UserStartGame();
 
-            // if (input == "yes" || input == "y")
-            // {
-            //     NewTurn();
-            // }
-            // else if (input == "no" || input == "n")
-            // {
-            //     Console.Clear();
-            //     Console.WriteLine("Goodbye commander...");
-            //     return;
-            // }
-            // else
-            // {
-            //     throw new ArgumentException("Wrong input, try again");
-
-            // }
+            if (userInteraction.IsAnswerYes(input))
+            {
+                NewTurn();
+            }
+            else if (userInteraction.IsAnswerNo(input))
+            {
+                Console.Clear();
+                Console.WriteLine("Goodbye commander...");
+                return;
+            }
+            else
+            {
+                StartGame();
+                throw new ArgumentException("Wrong input, try again");
+            }
         }
         public void NewTurn()
         {
@@ -49,12 +48,9 @@ namespace foop_mini_project.src
             _turnNo += 1;
             userInteraction.StartNewTurn();
             scoreBoard.ToString();
-            while (diceCup.amountOfRolls >= 0)
+            diceCup.ThrowDice();
+            while (diceCup.amountOfRolls <= 3)
             {
-                if (diceCup.amountOfRolls >= 3)
-                {
-                    diceCup.ThrowDice();
-                }
                 var rollHoldOrEnd = userInteraction.UserRollOrHold();
                 if (diceCup.amountOfRolls > 0 && (Regex.IsMatch(rollHoldOrEnd, @"^([hH]([oO][lL][dD])*)(\s)*$")))
                 {
@@ -75,17 +71,12 @@ namespace foop_mini_project.src
                 {
                     diceCup.ReThrowDices();
                 }
-                else if (diceCup.amountOfRolls == 0)
-                {
-                    Console.WriteLine("No more rolls this turn!");
-                    EndTurnAndSave();
-                }
                 else if (Regex.IsMatch(rollHoldOrEnd, @"^([eE])([nN][dD](\s)*)*\b"))
                 {
                     EndTurnAndSave();
                 }
             }
-
+            Console.WriteLine("No more rolls this turn!");
             EndTurnAndSave();
         }
         public void EndTurnAndSave()

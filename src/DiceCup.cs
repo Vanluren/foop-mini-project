@@ -15,7 +15,6 @@ namespace foop_mini_project.src
         public DiceCup(int rolls = 3)
         {
             userInteraction = new UserInteraction();
-            values = new ValueChecker();
             amountOfRolls = rolls;
             for (var i = 0; i < numberOfDices; i++)
             {
@@ -24,7 +23,6 @@ namespace foop_mini_project.src
         }
         public void ThrowDice()
         {
-            values.ClearChecker();
             amountOfRolls -= 1;
             for (var i = 0; i < numberOfDices; i++)
             {
