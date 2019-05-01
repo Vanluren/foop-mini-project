@@ -10,16 +10,26 @@ namespace foop_mini_project.src
         {
             return GetUserInput("Do you want to start the game(y/n)? \n");
         }
-        public string UserRollOrHold()
+        public string UseFairOrBiased()
         {
-            return GetUserInput(
-                                "Do you want to: \n" +
+            return GetUserInput("Do you want to: \n" +
+                                " - Use a fair dice?('fair') \n" +
+                                " - Use a biased dice?('biased') \n" +
+                                "\n");
+        }
+        public string UserRollOrHold(bool usingBiased = false)
+        {
+            string toPrint = "Do you want to: \n" +
                                 " - hold some dices('Hold'/'h'), \n" +
                                 " - roll the dices again('Roll/'r')? \n" +
-                                " - End the turn, and save a combo('End/'e')? \n" +
-                                "----------------------------" +
-                                "\n"
-                            );
+                                " - End the turn, and save a combo('End/'e')? \n";
+
+            if (usingBiased == true)
+            {
+                toPrint += " - Change the biased dice? ('change') \n";
+            }
+
+            return GetUserInput(toPrint + "----------------------------" + "\n");
         }
         public string UserHoldDices()
         {

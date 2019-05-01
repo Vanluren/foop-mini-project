@@ -10,7 +10,7 @@ namespace foop_mini_project.src
         public List<Dice> rolledDices = new List<Dice>();
         public List<Dice> heldDices = new List<Dice>();
         public int amountOfRolls;
-        ValueChecker values;
+        public bool useBiased;
 
         public DiceCup(int rolls = 3)
         {
@@ -18,8 +18,19 @@ namespace foop_mini_project.src
             amountOfRolls = rolls;
             for (var i = 0; i < numberOfDices; i++)
             {
-                rolledDices.Add(new Dice());
+                if (useBiased)
+                {
+                    rolledDices.Add(new BiasedDice());
+                }
+                else
+                {
+                    rolledDices.Add(new Dice());
+                }
             }
+        }
+        public void UseBiasedDice(bool input)
+        {
+            useBiased = input;
         }
         public void ThrowDice()
         {
@@ -86,7 +97,7 @@ namespace foop_mini_project.src
                     "\n" +
                     "----------------------------" +
                     "\n" +
-                    "You Roll: " +
+                    "Your Roll: " +
                     stringOfEyes +
                     "\n" +
                     "Rolls left:  " +

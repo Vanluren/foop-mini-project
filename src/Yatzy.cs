@@ -28,6 +28,8 @@ namespace foop_mini_project.src
 
             if (userInteraction.IsAnswerYes(input))
             {
+                input = userInteraction.UseFairOrBiased();
+                diceCup.UseBiasedDice(input == "biased");
                 NewTurn();
             }
             else if (userInteraction.IsAnswerNo(input))
@@ -51,7 +53,7 @@ namespace foop_mini_project.src
             diceCup.ThrowDice();
             while (diceCup.amountOfRolls <= 3)
             {
-                var rollHoldOrEnd = userInteraction.UserRollOrHold();
+                var rollHoldOrEnd = userInteraction.UserRollOrHold(diceCup.useBiased);
                 if (diceCup.amountOfRolls > 0 && (Regex.IsMatch(rollHoldOrEnd, @"^([hH]([oO][lL][dD])*)(\s)*$")))
                 {
                     var holdDices = userInteraction.UserHoldDices();
@@ -108,7 +110,19 @@ namespace foop_mini_project.src
 
             diceCup.amountOfRolls = 0;
             diceCup.RemoveHeldDice();
-            NewTurn();
+            if (_turnNo <= 13)
+            {
+                NewTurn();
+            }
+            else
+            {
+                EndGame();
+            }
+        }
+        public void EndGame()
+        {
+            System.Console.WriteLine("YOU ARE FINISHED!!! \n");
+            scoreBoard.ToString();
         }
     }
 }

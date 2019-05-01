@@ -6,8 +6,6 @@ namespace foop_mini_project.src
 {
     public class ScoreBoard
     {
-        private bool hasUsedStrike;
-        private bool hasUseChance;
         private ValueChecker valueChecker;
         public bool upperLocked;
         public bool lowerLocked;
@@ -49,10 +47,6 @@ namespace foop_mini_project.src
             }
 
         }
-        private Score CalcScore(List<Dice> dices)
-        {
-            return new Score();
-        }
         private bool CheckForUpperBonus()
         {
             int bonus = 0;
@@ -65,7 +59,7 @@ namespace foop_mini_project.src
             return false;
         }
 
-        public string DisplaySection(List<Score> section)
+        private string DisplaySection(List<Score> section)
         {
             string toDisplay = "";
 

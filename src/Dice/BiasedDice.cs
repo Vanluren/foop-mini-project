@@ -5,9 +5,9 @@ namespace foop_mini_project
 {
     public class BiasedDice : Dice
     {
-        public override int RollDice()
+        public int BiadedRollDice(int kicker = 0)
         {
-            return CurrentEyes = random.Next(1, numberOfSides + 1);
+            return CurrentEyes = (kicker % 2 == 0) ? 6 : 0;
         }
     }
 }
