@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using foop_mini_project;
 using foop_mini_project.src;
 
@@ -9,86 +10,111 @@ namespace foop_mini_project.src
     {
         DiceCup diceCup;
         UserInteraction userInteraction;
+        ValueChecker values;
         ScoreBoard scoreBoard;
         private int _turnNo = 0;
+
         public Yatzy()
         {
             diceCup = new DiceCup();
             userInteraction = new UserInteraction();
             scoreBoard = new ScoreBoard();
+            values = new ValueChecker();
         }
         public void StartGame()
         {
             Console.Clear();
-            var input = userInteraction.UserStartGame();
+            NewTurn();
+            // var input = userInteraction.UserStartGame();
 
-            if (input == "yes" || input == "y")
-            {
-                NewTurn();
-            }
-            else if (input == "no" || input == "n")
-            {
-                Console.Clear();
-                Console.WriteLine("Goodbye commander...");
-                return;
-            }
-            else
-            {
-                throw new ArgumentException("Wrong input, try again");
+            // if (input == "yes" || input == "y")
+            // {
+            //     NewTurn();
+            // }
+            // else if (input == "no" || input == "n")
+            // {
+            //     Console.Clear();
+            //     Console.WriteLine("Goodbye commander...");
+            //     return;
+            // }
+            // else
+            // {
+            //     throw new ArgumentException("Wrong input, try again");
 
-            }
+            // }
         }
         public void NewTurn()
         {
             diceCup.amountOfRolls = 3;
             _turnNo += 1;
             userInteraction.StartNewTurn();
-
+            scoreBoard.ToString();
             while (diceCup.amountOfRolls >= 0)
             {
                 if (diceCup.amountOfRolls >= 3)
                 {
-                    scoreBoard.ToString();
                     diceCup.ThrowDice();
                 }
-
                 var rollHoldOrEnd = userInteraction.UserRollOrHold();
-                if (diceCup.amountOfRolls > 0 && (rollHoldOrEnd == "hold" || rollHoldOrEnd == "HOLD" || rollHoldOrEnd == "h"))
+                if (diceCup.amountOfRolls > 0 && (Regex.IsMatch(rollHoldOrEnd, @"^([hH]([oO][lL][dD])*)(\s)*$")))
                 {
                     var holdDices = userInteraction.UserHoldDices();
                     diceCup.HoldDices(holdDices);
                     var rollAgain = userInteraction.CheckRollAgain();
 
-                    if (rollAgain == "y" || rollAgain == "y")
+                    if (userInteraction.IsAnswerYes(rollAgain))
                     {
                         diceCup.ReThrowDices();
                     }
                     else
                     {
-                        EndTurn();
+                        EndTurnAndSave();
                     }
                 }
-                else if (diceCup.amountOfRolls > 0 && (rollHoldOrEnd == "roll" || rollHoldOrEnd == "Roll" || rollHoldOrEnd == "r"))
+                else if (diceCup.amountOfRolls > 0 && Regex.IsMatch(rollHoldOrEnd, @"^([rR]([oO][lL][lL])*)(\s)*$"))
                 {
                     diceCup.ReThrowDices();
                 }
                 else if (diceCup.amountOfRolls == 0)
                 {
                     Console.WriteLine("No more rolls this turn!");
-                    EndTurn();
+                    EndTurnAndSave();
                 }
-                else if (rollHoldOrEnd == "end" || rollHoldOrEnd == "e")
+                else if (Regex.IsMatch(rollHoldOrEnd, @"^([eE])([nN][dD](\s)*)*\b"))
                 {
-                    EndTurn();
+                    EndTurnAndSave();
                 }
             }
 
-            EndTurn();
+            EndTurnAndSave();
         }
-
-        public void EndTurn()
+        public void EndTurnAndSave()
         {
-            scoreBoard.SaveScore(_turnNo, diceCup.rolledDices);
+            Console.WriteLine(values.PossibleComboList(diceCup.rolledDices, scoreBoard.upperLocked));
+            var userInput = userInteraction.EndTurnAndSaveCombo();
+            if (userInteraction.IsAnswerNo(userInput))
+            {
+                scoreBoard.SaveScore(_turnNo);
+            }
+            else if (Regex.IsMatch(userInput, @"^\d$"))
+            {
+                int comboIndex = Int32.Parse(userInput);
+                if (comboIndex <= values.combinations.Count)
+                {
+                    scoreBoard.SaveScore(_turnNo, values.GetCombo(comboIndex), userInput);
+                }
+                else
+                {
+                    Console.WriteLine("Please choose one of the combos! \n");
+                    EndTurnAndSave();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Wrong input! try again... \n");
+                EndTurnAndSave();
+            }
+
             diceCup.amountOfRolls = 0;
             diceCup.RemoveHeldDice();
             NewTurn();

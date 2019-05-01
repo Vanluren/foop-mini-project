@@ -97,11 +97,7 @@ namespace foop_mini_project.src
                     "held dices: " +
                     heldDicesStr +
                     "\n" +
-                    "----------------------------" +
-                    "\n" +
-                    "COMBINATIONS: " +
-                    "\n" +
-                    values.CustomToString(rolledDices);
+                    "----------------------------";
         }
     }
 }

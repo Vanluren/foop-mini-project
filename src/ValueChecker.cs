@@ -7,10 +7,14 @@ namespace foop_mini_project.src
 {
     public class ValueChecker
     {
-        OrderedDictionary combinations;
+        public List<DiceCombination> combinations;
+        public DiceCombination GetCombo(int index)
+        {
+            return combinations[index - 1];
+        }
         public ValueChecker()
         {
-            combinations = new OrderedDictionary();
+            combinations = new List<DiceCombination>();
         }
         public void PairOfChecker(List<Dice> dices)
         {
@@ -20,7 +24,7 @@ namespace foop_mini_project.src
                 if (amount > 0 && amount % 2 == 0)
                 {
                     int amountOfPairs = amount / 2;
-                    combinations.Add($"Pairs of {i}s: ", amountOfPairs);
+                    combinations.Add(new DiceCombination($"Pairs of {i}s: ", amountOfPairs, 2 * i));
                 };
             }
         }
@@ -32,7 +36,7 @@ namespace foop_mini_project.src
                 if (amount > 2 && amount % 3 == 0)
                 {
                     int amountOfPairs = amount / 3;
-                    combinations.Add($"Three of {i}s: ", amountOfPairs);
+                    combinations.Add(new DiceCombination($"Three of {i}s: ", amountOfPairs, 3 * i));
                 };
             }
         }
@@ -44,7 +48,7 @@ namespace foop_mini_project.src
                 if (amount > 3 && amount % 4 == 0)
                 {
                     int amountOfPairs = amount / 4;
-                    combinations.Add($"Four of {i}s: ", amountOfPairs);
+                    combinations.Add(new DiceCombination($"Four of {i}s: ", amountOfPairs, 4 * i));
                 };
             }
         }
@@ -60,7 +64,7 @@ namespace foop_mini_project.src
                 }
             }
 
-            combinations.Add($"Small straight: ", (check == 5));
+            combinations.Add(new DiceCombination($"Small straight: ", (check == 5) ? 1 : 0, 15));
         }
         public void LargeStraightChecker(List<Dice> dices)
         {
@@ -74,13 +78,13 @@ namespace foop_mini_project.src
                 }
             }
 
-            combinations.Add($"Large straight: ", (check == 5));
+            combinations.Add(new DiceCombination($"Large straight: ", (check == 5) ? 1 : 0, 16));
         }
 
         public void FullHouseChecker(List<Dice> dices)
         {
             bool check = false;
-
+            int score = 0;
             bool aPair = false;
             bool threeOfAKind = false;
 
@@ -89,10 +93,12 @@ namespace foop_mini_project.src
                 if (!threeOfAKind && AmountOfOneKindChecker(dices, i) == 3)
                 {
                     threeOfAKind = true;
+                    score += 3 * i;
                 }
                 else if (!aPair && AmountOfOneKindChecker(dices, i) == 2)
                 {
                     aPair = true;
+                    score += 2 * i;
                 }
                 if (aPair && threeOfAKind)
                 {
@@ -100,7 +106,7 @@ namespace foop_mini_project.src
                 }
             }
 
-            combinations.Add($"Full House: ", check);
+            combinations.Add(new DiceCombination($"Full House: ", check ? 1 : 0, score));
         }
 
         public int AmountOfOneKindChecker(List<Dice> dices, int eyesToLookFor)
@@ -120,20 +126,31 @@ namespace foop_mini_project.src
         {
             combinations.Clear();
         }
-        public string CustomToString(List<Dice> dices)
+        public string PossibleComboList(List<Dice> dices, bool lockUpper = false)
         {
-            PairOfChecker(dices);
-            ThreeOfAKindChecker(dices);
-            FourOfAKindChecker(dices);
-            SmallStraightChecker(dices);
-            LargeStraightChecker(dices);
-            FullHouseChecker(dices);
+            ClearChecker();
+
+            if (lockUpper == false)
+            {
+                PairOfChecker(dices);
+                ThreeOfAKindChecker(dices);
+                FourOfAKindChecker(dices);
+            }
+            else
+            {
+                SmallStraightChecker(dices);
+                LargeStraightChecker(dices);
+                FullHouseChecker(dices);
+            }
+
 
             string toPrint = "";
             var myEnumerator = combinations.GetEnumerator();
-            while (myEnumerator.MoveNext())
+            int index = 1;
+            foreach (DiceCombination combo in combinations)
             {
-                toPrint += $"{myEnumerator.Key} {myEnumerator.Value} \n";
+                toPrint += $"{index}.{combo.comboName} {combo.score} \n";
+                index++;
             }
             return toPrint;
         }
