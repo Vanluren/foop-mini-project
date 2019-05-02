@@ -12,7 +12,7 @@ namespace foop_mini_project.src
         public bool useBiased;
         int _biasedDiceKicker = 2;
 
-        public DiceCup(int rolls, bool shouldUseBiased = false)
+        public DiceCup(bool shouldUseBiased = false, int rolls = 3)
         {
             useBiased = shouldUseBiased;
             amountOfRolls = rolls;

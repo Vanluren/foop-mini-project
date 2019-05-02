@@ -29,8 +29,19 @@ namespace foop_mini_project.src
             if (userInteraction.IsAnswerYes(input))
             {
                 string biased = userInteraction.UseFairOrBiased();
-                _rollsPerTurn = Int32.Parse(userInteraction.HowManyRolls());
-                diceCup = new DiceCup(_rollsPerTurn, biased == "biased");
+                string rolls = userInteraction.HowManyRolls();
+
+                if (Regex.IsMatch(rolls, @"^\d$"))
+                {
+                    _rollsPerTurn = Int16.Parse(rolls);
+                    diceCup = new DiceCup(biased == "biased", _rollsPerTurn);
+                }
+                else
+                {
+                    _rollsPerTurn = 3;
+                    diceCup = new DiceCup(biased == "biased", _rollsPerTurn);
+                }
+
                 NewTurn();
             }
             else if (userInteraction.IsAnswerNo(input))

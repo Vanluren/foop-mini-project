@@ -19,7 +19,7 @@ namespace foop_mini_project.src
         }
         public string HowManyRolls()
         {
-            return GetUserInput("How many Rolls Per turn? \n");
+            return GetUserInput("How many Rolls Per turn?(Default: 3) \n");
         }
         public string ChangeBiasedDice()
         {
@@ -41,7 +41,12 @@ namespace foop_mini_project.src
         }
         public string UserHoldDices()
         {
-            return GetUserInput("Which dice would you like to hold? (ex. 1,2,3) \n");
+            return GetUserInput(
+            "Which dice would you like to hold? \n" +
+            "(Please input the placenumber of the dice, you would to hold. \n" +
+            "Multiple dice, should be inputted in the form of a comma seperated list(ex. 1,2,3). \n" +
+            "You may only hold a dice once.) \n"
+            );
         }
         public string CheckRollAgain()
         {

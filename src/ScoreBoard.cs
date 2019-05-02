@@ -81,6 +81,21 @@ namespace foop_mini_project.src
             return toDisplay;
         }
 
+        private int CalcTotalScore()
+        {
+            int totalScore = 0;
+            foreach (Score currentScore in _upper)
+            {
+                totalScore += currentScore.score;
+            }
+            foreach (Score currentScore in _lower)
+            {
+                totalScore += currentScore.score;
+            }
+
+            return totalScore;
+        }
+
         public override string ToString()
         {
             string scoreBoard = "";
@@ -103,6 +118,10 @@ namespace foop_mini_project.src
                                 "Lower:" + "\t" +
                                 DisplaySection(_lower);
             }
+            scoreBoard +=
+                        "----------------------------"
+                        + "\n"
+                        + "Total score: " + CalcTotalScore();
             Console.WriteLine(scoreBoard);
             return scoreBoard;
         }
