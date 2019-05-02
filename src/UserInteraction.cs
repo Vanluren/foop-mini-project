@@ -17,6 +17,14 @@ namespace foop_mini_project.src
                                 " - Use a biased dice?('biased') \n" +
                                 "\n");
         }
+        public string HowManyRolls()
+        {
+            return GetUserInput("How many Rolls Per turn? \n");
+        }
+        public string ChangeBiasedDice()
+        {
+            return GetUserInput("What should your dice eyes equal?\n");
+        }
         public string UserRollOrHold(bool usingBiased = false)
         {
             string toPrint = "Do you want to: \n" +

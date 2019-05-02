@@ -13,10 +13,10 @@ namespace foop_mini_project.src
         ValueChecker values;
         ScoreBoard scoreBoard;
         private int _turnNo = 0;
+        int _rollsPerTurn;
 
         public Yatzy()
         {
-            diceCup = new DiceCup();
             userInteraction = new UserInteraction();
             scoreBoard = new ScoreBoard();
             values = new ValueChecker();
@@ -28,8 +28,9 @@ namespace foop_mini_project.src
 
             if (userInteraction.IsAnswerYes(input))
             {
-                input = userInteraction.UseFairOrBiased();
-                diceCup.UseBiasedDice(input == "biased");
+                string biased = userInteraction.UseFairOrBiased();
+                _rollsPerTurn = Int32.Parse(userInteraction.HowManyRolls());
+                diceCup = new DiceCup(_rollsPerTurn, biased == "biased");
                 NewTurn();
             }
             else if (userInteraction.IsAnswerNo(input))
@@ -46,15 +47,14 @@ namespace foop_mini_project.src
         }
         public void NewTurn()
         {
-            diceCup.amountOfRolls = 3;
             _turnNo += 1;
             userInteraction.StartNewTurn();
             scoreBoard.ToString();
             diceCup.ThrowDice();
-            while (diceCup.amountOfRolls <= 3)
+            while (_turnNo < 13)
             {
-                var rollHoldOrEnd = userInteraction.UserRollOrHold(diceCup.useBiased);
-                if (diceCup.amountOfRolls > 0 && (Regex.IsMatch(rollHoldOrEnd, @"^([hH]([oO][lL][dD])*)(\s)*$")))
+                var userInput = userInteraction.UserRollOrHold(diceCup.useBiased);
+                if (diceCup.amountOfRolls > 0 && (Regex.IsMatch(userInput, @"^([hH]([oO][lL][dD])*)(\s)*$")))
                 {
                     var holdDices = userInteraction.UserHoldDices();
                     diceCup.HoldDices(holdDices);
@@ -69,11 +69,17 @@ namespace foop_mini_project.src
                         EndTurnAndSave();
                     }
                 }
-                else if (diceCup.amountOfRolls > 0 && Regex.IsMatch(rollHoldOrEnd, @"^([rR]([oO][lL][lL])*)(\s)*$"))
+                else if (diceCup.amountOfRolls > 0 && Regex.IsMatch(userInput, @"^([rR]([oO][lL][lL])*)(\s)*$"))
                 {
                     diceCup.ReThrowDices();
                 }
-                else if (Regex.IsMatch(rollHoldOrEnd, @"^([eE])([nN][dD](\s)*)*\b"))
+                else if (diceCup.useBiased && Regex.IsMatch(userInput, @"^([cC]([hH][aA][nN][gG][eE])*)(\s)*$"))
+                {
+                    userInput = userInteraction.ChangeBiasedDice();
+                    diceCup.ChangeBiasedDice(Int16.Parse(userInput));
+                    NewTurn();
+                }
+                else if (Regex.IsMatch(userInput, @"^([eE])([nN][dD](\s)*)*\b"))
                 {
                     EndTurnAndSave();
                 }
@@ -84,43 +90,42 @@ namespace foop_mini_project.src
         public void EndTurnAndSave()
         {
             Console.WriteLine(values.PossibleComboList(diceCup.rolledDices, scoreBoard.upperLocked));
-            var userInput = userInteraction.EndTurnAndSaveCombo();
-            if (userInteraction.IsAnswerNo(userInput))
+            if (_turnNo >= 13)
             {
-                scoreBoard.SaveScore(_turnNo);
+                EndGame();
             }
-            else if (Regex.IsMatch(userInput, @"^\d$"))
+            else
             {
-                int comboIndex = Int32.Parse(userInput);
-                if (comboIndex <= values.combinations.Count)
+                var userInput = userInteraction.EndTurnAndSaveCombo();
+                if (userInteraction.IsAnswerNo(userInput))
                 {
-                    scoreBoard.SaveScore(_turnNo, values.GetCombo(comboIndex), userInput);
+                    scoreBoard.SaveScore(_turnNo);
+                }
+                else if (Regex.IsMatch(userInput, @"^\d$"))
+                {
+                    int comboIndex = Int32.Parse(userInput);
+                    if (comboIndex <= values.combinations.Count)
+                    {
+                        scoreBoard.SaveScore(_turnNo, values.GetCombo(comboIndex), userInput);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please choose one of the combos! \n");
+                        EndTurnAndSave();
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Please choose one of the combos! \n");
+                    Console.WriteLine("Wrong input! try again... \n");
                     EndTurnAndSave();
                 }
-            }
-            else
-            {
-                Console.WriteLine("Wrong input! try again... \n");
-                EndTurnAndSave();
-            }
-
-            diceCup.amountOfRolls = 0;
-            diceCup.RemoveHeldDice();
-            if (_turnNo <= 13)
-            {
+                diceCup.ResetDiceCup(_rollsPerTurn);
                 NewTurn();
-            }
-            else
-            {
-                EndGame();
             }
         }
         public void EndGame()
         {
+            Console.Clear();
             System.Console.WriteLine("YOU ARE FINISHED!!! \n");
             scoreBoard.ToString();
         }

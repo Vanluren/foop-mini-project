@@ -23,6 +23,7 @@ namespace foop_mini_project.src
         public void SaveScore(int turnNumber, DiceCombination combo = null, string userInput = null)
         {
             Score score;
+            bool bonus = CheckForUpperBonus();
             if (combo != null)
             {
                 score = new Score(combo.comboName, combo.score);
@@ -35,9 +36,9 @@ namespace foop_mini_project.src
             {
                 _upper.Add(score);
             }
-            else if (turnNumber == 6 && CheckForUpperBonus())
+            else if (turnNumber == 6 && bonus)
             {
-                _upper.Add(new Score("BONUS!", 64));
+                _upper.Add(new Score("BONUS!", 50));
             }
             else
             {

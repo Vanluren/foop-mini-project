@@ -5,9 +5,18 @@ namespace foop_mini_project
 {
     public class BiasedDice : Dice
     {
-        public int BiadedRollDice(int kicker = 0)
+        int kicker;
+        public override int RollDice()
         {
-            return CurrentEyes = (kicker % 2 == 0) ? 6 : 0;
+            if (Held == false)
+            {
+                return CurrentEyes = kicker != 0 ? kicker : 6;
+            }
+            return CurrentEyes;
+        }
+        public void SetKicker(int newKicker)
+        {
+            kicker = newKicker;
         }
     }
 }

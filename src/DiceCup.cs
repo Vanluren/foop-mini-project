@@ -5,21 +5,23 @@ namespace foop_mini_project.src
 {
     public class DiceCup
     {
-        UserInteraction userInteraction;
-        public int numberOfDices = 6;
+        private int numberOfDices = 6;
         public List<Dice> rolledDices = new List<Dice>();
         public List<Dice> heldDices = new List<Dice>();
         public int amountOfRolls;
         public bool useBiased;
+        int _biasedDiceKicker = 2;
 
-        public DiceCup(int rolls = 3)
+        public DiceCup(int rolls, bool shouldUseBiased = false)
         {
-            userInteraction = new UserInteraction();
+            useBiased = shouldUseBiased;
             amountOfRolls = rolls;
             for (var i = 0; i < numberOfDices; i++)
             {
                 if (useBiased)
                 {
+                    BiasedDice biased = new BiasedDice();
+                    biased.SetKicker(_biasedDiceKicker);
                     rolledDices.Add(new BiasedDice());
                 }
                 else
@@ -28,13 +30,9 @@ namespace foop_mini_project.src
                 }
             }
         }
-        public void UseBiasedDice(bool input)
-        {
-            useBiased = input;
-        }
         public void ThrowDice()
         {
-            amountOfRolls -= 1;
+            amountOfRolls--;
             for (var i = 0; i < numberOfDices; i++)
             {
                 rolledDices[i].RollDice();
@@ -69,6 +67,23 @@ namespace foop_mini_project.src
                 dice.HoldDice(false);
             }
             heldDices.RemoveAll(item => item != null);
+        }
+        private void ResetAmountOfRolls(int amount)
+        {
+            System.Console.WriteLine(amount);
+            amountOfRolls = amount;
+        }
+        public void ResetDiceCup(int amount)
+        {
+            ResetAmountOfRolls(amount);
+            RemoveHeldDice();
+        }
+        public void ChangeBiasedDice(int change)
+        {
+            foreach (BiasedDice dice in rolledDices)
+            {
+                dice.SetKicker(change);
+            }
         }
         public override string ToString()
         {

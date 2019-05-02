@@ -34,6 +34,32 @@ namespace foop_mini_project.src
                 };
             }
         }
+        public void AmountOfPairsChecker(List<Dice> dices, int amountOfPairs)
+        {
+            int pairs = 0;
+            int score = 0;
+            for (int i = 1; i <= 6; i++)
+            {
+
+                if (AmountOfOneKindChecker(dices, i) >= 2)
+                {
+                    pairs++;
+                    score += 2 * i;
+                }
+
+            }
+            if (pairs == amountOfPairs && amountOfPairs == 2)
+            {
+                combinations.Add(new DiceCombination($"Two pairs", pairs, score > 10 ? 10 : score));
+            }
+            else if (pairs == amountOfPairs && amountOfPairs == 3)
+            {
+                combinations.Add(new DiceCombination($"Two pairs", pairs, score > 30 ? 30 : score));
+            }
+        }
+
+
+
         public void SmallStraightChecker(List<Dice> dices)
         {
             int check = 0;
@@ -48,7 +74,7 @@ namespace foop_mini_project.src
 
             combinations.Add(new DiceCombination($"Small straight", (check == 5) ? 1 : 0, 15));
         }
-        public void LargeStraightChecker(List<Dice> dices)
+        private void LargeStraightChecker(List<Dice> dices)
         {
             int check = 0;
 
@@ -63,7 +89,7 @@ namespace foop_mini_project.src
             combinations.Add(new DiceCombination($"Large straight", (check == 5) ? 1 : 0, 16));
         }
 
-        public void FullHouseChecker(List<Dice> dices)
+        private void FullHouseChecker(List<Dice> dices)
         {
             bool check = false;
             int score = 0;
@@ -91,7 +117,7 @@ namespace foop_mini_project.src
             combinations.Add(new DiceCombination($"Full House: ", check ? 1 : 0, score));
         }
 
-        public void ChanceChecker(List<Dice> dices)
+        private void ChanceChecker(List<Dice> dices)
         {
             int score = 0;
             if (hasUsedChance == false)
@@ -104,7 +130,7 @@ namespace foop_mini_project.src
             }
         }
 
-        public int AmountOfOneKindChecker(List<Dice> dices, int eyesToLookFor)
+        private int AmountOfOneKindChecker(List<Dice> dices, int eyesToLookFor)
         {
             int amountOfThisKind = 0;
             foreach (Dice dice in dices)
@@ -117,7 +143,7 @@ namespace foop_mini_project.src
             return amountOfThisKind;
         }
 
-        public void ClearChecker()
+        private void ClearChecker()
         {
             combinations.Clear();
         }
@@ -130,13 +156,24 @@ namespace foop_mini_project.src
             if (lockUpper == false)
             {
                 ChanceChecker(dices);
-                XOfAKindChecker(dices, 2, "Pair of");
-                XOfAKindChecker(dices, 3, "Three");
-                XOfAKindChecker(dices, 4, "Four");
+                int score = 0;
+                for (int i = 1; i <= 6; i++)
+                {
+                    var amount = AmountOfOneKindChecker(dices, i);
+                    if (amount > 0)
+                    {
+                        score = amount * i;
+                        combinations.Add(new DiceCombination($"{amount}x{i}!", amount, score));
+                    }
+                }
             }
             else
             {
                 ChanceChecker(dices);
+                AmountOfPairsChecker(dices, 2);
+                AmountOfPairsChecker(dices, 3);
+                XOfAKindChecker(dices, 3, "Three");
+                XOfAKindChecker(dices, 4, "Four");
                 SmallStraightChecker(dices);
                 LargeStraightChecker(dices);
                 FullHouseChecker(dices);

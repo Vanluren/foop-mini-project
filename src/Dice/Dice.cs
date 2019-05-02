@@ -6,7 +6,7 @@ namespace foop_mini_project
     {
         protected Random random;
         protected int numberOfSides;
-        private bool Held = false;
+        protected bool Held = false;
         public int CurrentEyes;
         public Dice(int sides = 6)
         {
