@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace foop_mini_project.src
 {
+    /// <summary>
+    /// Dice cup.
+    /// </summary>
     public class DiceCup
     {
         private int numberOfDices = 6;
@@ -11,11 +14,15 @@ namespace foop_mini_project.src
         public int amountOfRolls;
         public bool useBiased;
         int _biasedDiceKicker = 2;
-
-        public DiceCup(bool shouldUseBiased = false, int rolls = 3)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:foop_mini_project.src.DiceCup"/> class.
+        /// </summary>
+        /// <param name="shouldUseBiasedDice">If set to <c>true</c> should use biased dices.</param>
+        /// <param name="rollsPerTurn">Rolls per turn.</param>
+        public DiceCup(bool shouldUseBiasedDice = false, int rollsPerTurn = 3)
         {
-            useBiased = shouldUseBiased;
-            amountOfRolls = rolls;
+            useBiased = shouldUseBiasedDice;
+            amountOfRolls = rollsPerTurn;
             for (var i = 0; i < numberOfDices; i++)
             {
                 if (useBiased)
@@ -30,6 +37,9 @@ namespace foop_mini_project.src
                 }
             }
         }
+        /// <summary>
+        /// Throws the dice in the cup.
+        /// </summary>
         public void ThrowDice()
         {
             amountOfRolls--;
@@ -39,7 +49,9 @@ namespace foop_mini_project.src
             }
             Console.WriteLine(ToString());
         }
-
+        /// <summary>
+        /// Rethrow dices in the dicecup. Print action.
+        /// </summary>
         public void ReThrowDices()
         {
             if (amountOfRolls > 0)
@@ -48,9 +60,13 @@ namespace foop_mini_project.src
                 ThrowDice();
             }
         }
-        public void HoldDices(string input)
+        /// <summary>
+        /// Holds the chosen dices, based on the users.
+        /// </summary>
+        /// <param name="userInput">Input from the user.</param>
+        public void HoldDices(string userInput)
         {
-            string[] indexFromInput = input.Split(",");
+            string[] indexFromInput = userInput.Split(",");
             for (int i = 0; i < indexFromInput.Length; i++)
             {
                 int indexOfDiceToHold = Int16.Parse(indexFromInput[i]) - 1;
@@ -60,6 +76,9 @@ namespace foop_mini_project.src
             }
 
         }
+        /// <summary>
+        /// Removes the held dice property from the dice in the cup.
+        /// </summary>
         public void RemoveHeldDice()
         {
             foreach (Dice dice in heldDices)
@@ -68,16 +87,28 @@ namespace foop_mini_project.src
             }
             heldDices.RemoveAll(item => item != null);
         }
+        /// <summary>
+        /// Resets the amount of rolls to the initial value.
+        /// </summary>
+        /// <param name="amount">Amount.</param>
         private void ResetAmountOfRolls(int amount)
         {
             System.Console.WriteLine(amount);
             amountOfRolls = amount;
         }
+        /// <summary>
+        /// Resets the dice cup.
+        /// </summary>
+        /// <param name="amount">Amount.</param>
         public void ResetDiceCup(int amount)
         {
             ResetAmountOfRolls(amount);
             RemoveHeldDice();
         }
+        /// <summary>
+        /// Changes the biased dice, based on the int from ther users input.
+        /// </summary>
+        /// <param name="change">Change.</param>
         public void ChangeBiasedDice(int change)
         {
             foreach (BiasedDice dice in rolledDices)
@@ -85,6 +116,10 @@ namespace foop_mini_project.src
                 dice.SetKicker(change);
             }
         }
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:foop_mini_project.src.DiceCup"/>.
+        /// </summary>
+        /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:foop_mini_project.src.DiceCup"/>.</returns>
         public override string ToString()
         {
             string stringOfEyes = "";

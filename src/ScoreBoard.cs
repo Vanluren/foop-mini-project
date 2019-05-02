@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace foop_mini_project.src
 {
+    /// <summary>
+    /// Score board-class that represents the scoreboard in the game.
+    /// </summary>
     public class ScoreBoard
     {
         public bool upperLocked;
@@ -10,6 +13,9 @@ namespace foop_mini_project.src
         private readonly List<Score> _upper;
         private readonly List<Score> _lower;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:foop_mini_project.src.ScoreBoard"/> class.
+        /// </summary>
         public ScoreBoard()
         {
             _upper = new List<Score>();
@@ -17,6 +23,12 @@ namespace foop_mini_project.src
             upperLocked = false;
             lowerLocked = true;
         }
+
+        /// <summary>
+        /// Saves a score to the scoreboard.
+        /// </summary>
+        /// <param name="turnNumber">The current turn number</param>
+        /// <param name="combo">Combo. The combo chosen to save by the user.</param>
         public void SaveScore(int turnNumber, DiceCombination combo = null)
         {
             Score score;
@@ -45,11 +57,20 @@ namespace foop_mini_project.src
             }
 
         }
+        /// <summary>
+        /// Checks for upper bonus.
+        /// </summary>
+        /// <returns><c>true</c>, if for upper bonus was checked, <c>false</c> otherwise.</returns>
         private bool CheckForUpperBonus()
         {
             return (CalcTotalScore() >= 63);
         }
 
+        /// <summary>
+        /// Displaies the given section.
+        /// </summary>
+        /// <returns>The section.</returns>
+        /// <param name="section">Section.</param>
         private string DisplaySection(List<Score> section)
         {
             string toDisplay = "";
@@ -71,6 +92,10 @@ namespace foop_mini_project.src
             return toDisplay;
         }
 
+        /// <summary>
+        /// Calculates the total score.
+        /// </summary>
+        /// <returns>The total score.</returns>
         private int CalcTotalScore()
         {
             int totalScore = 0;
@@ -86,6 +111,10 @@ namespace foop_mini_project.src
             return totalScore;
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:foop_mini_project.src.ScoreBoard"/>.
+        /// </summary>
+        /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:foop_mini_project.src.ScoreBoard"/>.</returns>
         public override string ToString()
         {
             string scoreBoard = "";

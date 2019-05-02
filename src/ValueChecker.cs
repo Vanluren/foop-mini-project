@@ -1,19 +1,40 @@
 using System.Collections.Generic;
 namespace foop_mini_project.src
 {
+    /// <summary>
+    /// Value checker. Checks the values the rolls have made, 
+    /// against the yatzy rules
+    /// </summary>
     public class ValueChecker
     {
         bool hasUsedChance;
         public List<DiceCombination> combinations;
+
+ 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:foop_mini_project.src.ValueChecker"/> class.
+        /// </summary>
+        public ValueChecker()
+        {
+            combinations = new List<DiceCombination>();
+        }
+
+        /// <summary>
+        /// Gets the combo from the saved values .
+        /// </summary>
+        /// <returns>The combo.</returns>
+        /// <param name="index">Index.</param>
         public DiceCombination GetCombo(int index)
         {
             hasUsedChance |= combinations[index - 1].comboName == "CHANCE!";
             return combinations[index - 1];
         }
-        public ValueChecker()
-        {
-            combinations = new List<DiceCombination>();
-        }
+        /// <summary>
+        /// Check for x dices of dice-eyes.
+        /// </summary>
+        /// <param name="dices">Dices.</param>
+        /// <param name="kind">Kind.</param>
+        /// <param name="wording">Wording.</param>
         public void XOfAKindChecker(List<Dice> dices, int kind, string wording = null)
         {
             string wordingToPring = wording == null ? $"{kind}x" : $"{wording} ";
@@ -27,6 +48,12 @@ namespace foop_mini_project.src
                 };
             }
         }
+
+        /// <summary>
+        /// Amounts of pairs checker. Checks how many pairs there are.
+        /// </summary>
+        /// <param name="dices">Dices.</param>
+        /// <param name="amountOfPairs">Amount of pairs.</param>
         public void AmountOfPairsChecker(List<Dice> dices, int amountOfPairs)
         {
             int pairs = 0;
@@ -50,6 +77,11 @@ namespace foop_mini_project.src
                 combinations.Add(new DiceCombination($"Two pairs", pairs, score > 30 ? 30 : score));
             }
         }
+
+        /// <summary>
+        /// Check for a small straight
+        /// </summary>
+        /// <param name="dices">Dices.</param>
         public void SmallStraightChecker(List<Dice> dices)
         {
             int check = 0;
@@ -64,6 +96,11 @@ namespace foop_mini_project.src
 
             combinations.Add(new DiceCombination($"Small straight", (check == 5) ? 1 : 0, 15));
         }
+
+        /// <summary>
+        /// Check for a large straight
+        /// </summary>
+        /// <param name="dices">Dices.</param>
         private void LargeStraightChecker(List<Dice> dices)
         {
             int check = 0;
@@ -79,6 +116,10 @@ namespace foop_mini_project.src
             combinations.Add(new DiceCombination($"Large straight", (check == 5) ? 1 : 0, 16));
         }
 
+        /// <summary>
+        /// Check for a full house combo
+        /// </summary>
+        /// <param name="dices">Dices.</param>
         private void FullHouseChecker(List<Dice> dices)
         {
             bool check = false;
@@ -98,15 +139,16 @@ namespace foop_mini_project.src
                     aPair = true;
                     score += 2 * i;
                 }
-                if (aPair && threeOfAKind)
-                {
-                    check = true;
-                }
+                check |= (aPair && threeOfAKind);
             }
 
             combinations.Add(new DiceCombination($"Full House: ", check ? 1 : 0, score));
         }
 
+        /// <summary>
+        /// Check for a chance!
+        /// </summary>
+        /// <param name="dices">Dices.</param>
         private void ChanceChecker(List<Dice> dices)
         {
             int score = 0;
@@ -120,6 +162,12 @@ namespace foop_mini_project.src
             }
         }
 
+        /// <summary>
+        /// Checks how many dices have the same eyes
+        /// </summary>
+        /// <returns>Amount of dice with same eyes</returns>
+        /// <param name="dices">Dices.</param>
+        /// <param name="eyesToLookFor">Eyes to look for.</param>
         private int AmountOfOneKindChecker(List<Dice> dices, int eyesToLookFor)
         {
             int amountOfThisKind = 0;
@@ -133,10 +181,20 @@ namespace foop_mini_project.src
             return amountOfThisKind;
         }
 
+        /// <summary>
+        /// Clears the checker.
+        /// </summary>
         private void ClearChecker()
         {
             combinations.Clear();
         }
+
+        /// <summary>
+        /// Makes a possible combos list.
+        /// </summary>
+        /// <returns>The combo list.</returns>
+        /// <param name="dices">Dices.</param>
+        /// <param name="lockUpper">If set to <c>true</c> lock upper.</param>
         public string PossibleComboList(List<Dice> dices, bool lockUpper = false)
         {
             string toPrint = "";

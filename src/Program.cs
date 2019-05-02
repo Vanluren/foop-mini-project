@@ -8,7 +8,10 @@ namespace foop_mini_project
     {
         static void Main(string[] args)
         {
+            // Create a new yatzy game
             Yatzy yatzy = new Yatzy();
+
+            // Start the yatzy game ;-)
             yatzy.StartGame();
         }
     }

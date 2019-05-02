@@ -3,21 +3,45 @@ using System.Text.RegularExpressions;
 
 namespace foop_mini_project.src
 {
+    /// <summary>
+    /// Yatzy. Represents the flow of a yatzy game. 
+    /// This class uses the Regex class in the System package. This is 
+    /// used to easily check the users input.
+    /// </summary>
     class Yatzy
     {
+        /// <summary>
+        /// The dice cup used in the game
+        /// </summary>
         DiceCup diceCup;
+
         readonly UserInteraction userInteraction;
         readonly ValueChecker values;
         readonly ScoreBoard scoreBoard;
-        private int _turnNo = 0;
+
+        /// <summary>
+        /// The current turn no.
+        /// </summary>
+        int _turnNo;
+
+        /// <summary>
+        /// The chosen rolls per turn.
+        /// </summary>
         int _rollsPerTurn;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:foop_mini_project.src.Yatzy"/> class.
+        /// </summary>
         public Yatzy()
         {
             userInteraction = new UserInteraction();
             scoreBoard = new ScoreBoard();
             values = new ValueChecker();
         }
+
+        /// <summary>
+        /// Starts the game.
+        /// </summary>
         public void StartGame()
         {
             Console.Clear();
@@ -53,6 +77,10 @@ namespace foop_mini_project.src
                 throw new ArgumentException("Wrong input, try again");
             }
         }
+
+        /// <summary>
+        /// Starts a New turn.
+        /// </summary>
         public void NewTurn()
         {
             _turnNo += 1;
@@ -95,6 +123,10 @@ namespace foop_mini_project.src
             Console.WriteLine("No more rolls this turn!");
             EndTurnAndSave();
         }
+
+        /// <summary>
+        /// Ends the turn and saves a combo and score.
+        /// </summary>
         public void EndTurnAndSave()
         {
             Console.WriteLine(values.PossibleComboList(diceCup.rolledDices, scoreBoard.upperLocked));
@@ -131,6 +163,10 @@ namespace foop_mini_project.src
                 NewTurn();
             }
         }
+
+        /// <summary>
+        /// Ends the game.
+        /// </summary>
         public void EndGame()
         {
             Console.Clear();
