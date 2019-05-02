@@ -1,26 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 
 namespace foop_mini_project.src
 {
     public class ScoreBoard
     {
-        private ValueChecker valueChecker;
         public bool upperLocked;
         public bool lowerLocked;
-        private List<Score> _upper;
-        private List<Score> _lower;
+        private readonly List<Score> _upper;
+        private readonly List<Score> _lower;
 
         public ScoreBoard()
         {
-            valueChecker = new ValueChecker();
             _upper = new List<Score>();
             _lower = new List<Score>();
             upperLocked = false;
             lowerLocked = true;
         }
-        public void SaveScore(int turnNumber, DiceCombination combo = null, string userInput = null)
+        public void SaveScore(int turnNumber, DiceCombination combo = null)
         {
             Score score;
             bool bonus = CheckForUpperBonus();
@@ -36,7 +33,7 @@ namespace foop_mini_project.src
             {
                 _upper.Add(score);
             }
-            else if (turnNumber == 6 && bonus)
+            else if (turnNumber >= 6 && bonus)
             {
                 _upper.Add(new Score("BONUS!", 50));
             }
@@ -50,14 +47,7 @@ namespace foop_mini_project.src
         }
         private bool CheckForUpperBonus()
         {
-            int bonus = 0;
-            foreach (Score score in _upper)
-            {
-                bonus += score.score;
-            }
-
-            if (bonus >= 63) return true;
-            return false;
+            return (CalcTotalScore() >= 63);
         }
 
         private string DisplaySection(List<Score> section)
@@ -67,13 +57,13 @@ namespace foop_mini_project.src
             if (section.Count > 0)
             {
                 toDisplay += "\n"
-                             + String.Format("{0,-5} | {1,-12} | {2,5}", "Turn", "Combo", "Score")
+                             + string.Format("{0,-5} | {1,-12} | {2,5}", "Turn", "Combo", "Score")
                              + "\n";
 
                 int count = 1;
                 foreach (Score score in section)
                 {
-                    toDisplay += String.Format("{0,-5} | {1,-12} | {2,5}", count, score.scoreName, score.score) + "\n";
+                    toDisplay += string.Format("{0,-5} | {1,-12} | {2,5}", count, score.scoreName, score.score) + "\n";
                     count++;
                 }
             }
@@ -109,6 +99,10 @@ namespace foop_mini_project.src
                 scoreBoard += "\n" +
                                   "Upper:" + "\t" +
                                   DisplaySection(_upper);
+
+                scoreBoard += "----------------------------"
+                                + "\n"
+                                + "Total score: " + CalcTotalScore();
             }
 
             if (_lower.Count > 0)
@@ -118,10 +112,6 @@ namespace foop_mini_project.src
                                 "Lower:" + "\t" +
                                 DisplaySection(_lower);
             }
-            scoreBoard +=
-                        "----------------------------"
-                        + "\n"
-                        + "Total score: " + CalcTotalScore();
             Console.WriteLine(scoreBoard);
             return scoreBoard;
         }

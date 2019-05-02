@@ -1,17 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using foop_mini_project;
-using foop_mini_project.src;
 
 namespace foop_mini_project.src
 {
     class Yatzy
     {
         DiceCup diceCup;
-        UserInteraction userInteraction;
-        ValueChecker values;
-        ScoreBoard scoreBoard;
+        readonly UserInteraction userInteraction;
+        readonly ValueChecker values;
+        readonly ScoreBoard scoreBoard;
         private int _turnNo = 0;
         int _rollsPerTurn;
 
@@ -87,7 +84,7 @@ namespace foop_mini_project.src
                 else if (diceCup.useBiased && Regex.IsMatch(userInput, @"^([cC]([hH][aA][nN][gG][eE])*)(\s)*$"))
                 {
                     userInput = userInteraction.ChangeBiasedDice();
-                    diceCup.ChangeBiasedDice(Int16.Parse(userInput));
+                    diceCup.ChangeBiasedDice(short.Parse(userInput));
                     NewTurn();
                 }
                 else if (Regex.IsMatch(userInput, @"^([eE])([nN][dD](\s)*)*\b"))
@@ -114,10 +111,10 @@ namespace foop_mini_project.src
                 }
                 else if (Regex.IsMatch(userInput, @"^\d$"))
                 {
-                    int comboIndex = Int32.Parse(userInput);
+                    int comboIndex = int.Parse(userInput);
                     if (comboIndex <= values.combinations.Count)
                     {
-                        scoreBoard.SaveScore(_turnNo, values.GetCombo(comboIndex), userInput);
+                        scoreBoard.SaveScore(_turnNo, values.GetCombo(comboIndex));
                     }
                     else
                     {
@@ -137,7 +134,7 @@ namespace foop_mini_project.src
         public void EndGame()
         {
             Console.Clear();
-            System.Console.WriteLine("YOU ARE FINISHED!!! \n");
+            Console.WriteLine("YOU ARE FINISHED!!! \n");
             scoreBoard.ToString();
         }
     }

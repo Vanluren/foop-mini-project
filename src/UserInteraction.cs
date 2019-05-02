@@ -1,6 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-
 namespace foop_mini_project.src
 {
     public class UserInteraction : UserInput

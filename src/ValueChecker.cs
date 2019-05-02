@@ -1,20 +1,13 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-
 namespace foop_mini_project.src
 {
     public class ValueChecker
     {
-        bool hasUsedChance = false;
+        bool hasUsedChance;
         public List<DiceCombination> combinations;
         public DiceCombination GetCombo(int index)
         {
-            if (combinations[index - 1].comboName == "CHANCE!")
-            {
-                hasUsedChance = true;
-            }
+            hasUsedChance |= combinations[index - 1].comboName == "CHANCE!";
             return combinations[index - 1];
         }
         public ValueChecker()
@@ -57,9 +50,6 @@ namespace foop_mini_project.src
                 combinations.Add(new DiceCombination($"Two pairs", pairs, score > 30 ? 30 : score));
             }
         }
-
-
-
         public void SmallStraightChecker(List<Dice> dices)
         {
             int check = 0;
