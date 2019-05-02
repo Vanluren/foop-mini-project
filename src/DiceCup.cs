@@ -69,7 +69,7 @@ namespace foop_mini_project.src
             string[] indexFromInput = userInput.Split(",");
             for (int i = 0; i < indexFromInput.Length; i++)
             {
-                int indexOfDiceToHold = Int16.Parse(indexFromInput[i]) - 1;
+                int indexOfDiceToHold = int.Parse(indexFromInput[i]) - 1;
                 Dice dice = rolledDices[indexOfDiceToHold];
                 dice.HoldDice(true);
                 heldDices.Insert(i, dice);

@@ -54,7 +54,7 @@ namespace foop_mini_project.src
 
                 if (Regex.IsMatch(rolls, @"^\d$"))
                 {
-                    _rollsPerTurn = Int16.Parse(rolls);
+                    _rollsPerTurn = int.Parse(rolls);
                     diceCup = new DiceCup(biased == "biased", _rollsPerTurn);
                 }
                 else
