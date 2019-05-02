@@ -146,7 +146,7 @@ namespace foop_mini_project.src
                     int comboIndex = int.Parse(userInput);
                     if (comboIndex <= values.combinations.Count)
                     {
-                        scoreBoard.SaveScore(_turnNo, values.GetCombo(comboIndex));
+                        scoreBoard.SaveScore(_turnNo, values.GetComboFromCombolist(comboIndex));
                     }
                     else
                     {
