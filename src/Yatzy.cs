@@ -44,37 +44,42 @@ namespace foop_mini_project.src
         /// </summary>
         public void StartGame()
         {
-            Console.Clear();
-            var input = userInteraction.UserStartGame();
-
-            if (userInteraction.IsAnswerYes(input))
-            {
-                string biased = userInteraction.UseFairOrBiased();
-                string rolls = userInteraction.HowManyRolls();
-
-                if (Regex.IsMatch(rolls, @"^\d$"))
-                {
-                    _rollsPerTurn = int.Parse(rolls);
-                    diceCup = new DiceCup(biased == "biased", _rollsPerTurn);
-                }
-                else
-                {
-                    _rollsPerTurn = 3;
-                    diceCup = new DiceCup(biased == "biased", _rollsPerTurn);
-                }
-
-                NewTurn();
-            }
-            else if (userInteraction.IsAnswerNo(input))
+            try
             {
                 Console.Clear();
-                Console.WriteLine("Goodbye commander...");
-                return;
+                var input = userInteraction.UserStartGame();
+                if (userInteraction.IsAnswerYes(input))
+                {
+                    string biased = userInteraction.UseFairOrBiased();
+                    string rolls = userInteraction.HowManyRolls();
+
+                    if (Regex.IsMatch(rolls, @"^\d$"))
+                    {
+                        _rollsPerTurn = int.Parse(rolls);
+                        diceCup = new DiceCup(biased == "biased", _rollsPerTurn);
+                    }
+                    else
+                    {
+                        _rollsPerTurn = 3;
+                        diceCup = new DiceCup(biased == "biased", _rollsPerTurn);
+                    }
+
+                    NewTurn();
+                }
+                else if (userInteraction.IsAnswerNo(input))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Goodbye commander...");
+                    return;
+                }
             }
-            else
+            catch (ArgumentException argumentException)
             {
-                StartGame();
-                throw new ArgumentException("Wrong input, try again");
+                throw new ArgumentException("Wrong input, try again", argumentException);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong!", e);
             }
         }
 
@@ -114,6 +119,9 @@ namespace foop_mini_project.src
                     userInput = userInteraction.ChangeBiasedDice();
                     diceCup.ChangeBiasedDice(short.Parse(userInput));
                     NewTurn();
+                }
+                else if (userInput == "Help" || userInput == "help")
+                {
                 }
                 else if (Regex.IsMatch(userInput, @"^([eE])([nN][dD](\s)*)*\b"))
                 {

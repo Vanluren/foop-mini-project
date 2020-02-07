@@ -8,12 +8,13 @@ namespace foop_mini_project.src
     /// </summary>
     public class DiceCup
     {
-        private int numberOfDices = 6;
         public List<Dice> rolledDices = new List<Dice>();
         public List<Dice> heldDices = new List<Dice>();
         public int amountOfRolls;
         public bool useBiased;
         int _biasedDiceKicker = 2;
+        int _numberOfDices = 6;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:foop_mini_project.src.DiceCup"/> class.
         /// </summary>
@@ -23,7 +24,7 @@ namespace foop_mini_project.src
         {
             useBiased = shouldUseBiasedDice;
             amountOfRolls = rollsPerTurn;
-            for (var i = 0; i < numberOfDices; i++)
+            for (var i = 0; i < _numberOfDices; i++)
             {
                 if (useBiased)
                 {
@@ -43,7 +44,7 @@ namespace foop_mini_project.src
         public void ThrowDice()
         {
             amountOfRolls--;
-            for (var i = 0; i < numberOfDices; i++)
+            for (var i = 0; i < _numberOfDices; i++)
             {
                 rolledDices[i].RollDice();
             }
